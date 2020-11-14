@@ -39,13 +39,19 @@ namespace Tomlyn.Syntax
             list.Add(new KeyValueSyntax(name, new StringValueSyntax(value)));
         }
 
-        public static void Add(this SyntaxList<KeyValueSyntax> list, string name, int[] values)
+        public static void Add(this SyntaxList<KeyValueSyntax> list, string name, ReadOnlySpan<float> values)
+        {
+            if (list == null) throw new ArgumentNullException(nameof(list));
+            list.Add(new KeyValueSyntax(name, new ArraySyntax(values)));
+        }
+
+        public static void Add(this SyntaxList<KeyValueSyntax> list, string name, ReadOnlySpan<int> values)
         {
             if (list == null) throw new ArgumentNullException(nameof(list));
             list.Add(new KeyValueSyntax(name, new ArraySyntax(values)));
         }
         
-        public static void Add(this SyntaxList<KeyValueSyntax> list, string name, string[] values)
+        public static void Add(this SyntaxList<KeyValueSyntax> list, string name, ReadOnlySpan<string> values)
         {
             if (list == null) throw new ArgumentNullException(nameof(list));
             list.Add(new KeyValueSyntax(name, new ArraySyntax(values)));

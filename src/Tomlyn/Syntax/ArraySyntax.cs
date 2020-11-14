@@ -25,7 +25,28 @@ namespace Tomlyn.Syntax
         /// Creates an instance of an <see cref="ArraySyntax"/>
         /// </summary>
         /// <param name="values">An array of integer values</param>
-        public ArraySyntax(int[] values) : this()
+        public ArraySyntax(ReadOnlySpan<float> values) : this()
+        {
+            if (values == null) throw new ArgumentNullException(nameof(values));
+            OpenBracket = SyntaxFactory.Token(TokenKind.OpenBracket);
+            CloseBracket = SyntaxFactory.Token(TokenKind.CloseBracket);
+            for (int i = 0; i < values.Length; i++)
+            {
+                var item = new ArrayItemSyntax { Value = new FloatValueSyntax(values[i]) };
+                if (i + 1 < values.Length)
+                {
+                    item.Comma = SyntaxFactory.Token(TokenKind.Comma);
+                    item.Comma.AddTrailingWhitespace();
+                }
+                Items.Add(item);
+            }
+        }
+
+        /// <summary>
+        /// Creates an instance of an <see cref="ArraySyntax"/>
+        /// </summary>
+        /// <param name="values">An array of integer values</param>
+        public ArraySyntax(ReadOnlySpan<int> values) : this()
         {
             if (values == null) throw new ArgumentNullException(nameof(values));
             OpenBracket = SyntaxFactory.Token(TokenKind.OpenBracket);
@@ -46,7 +67,7 @@ namespace Tomlyn.Syntax
         /// Creates an instance of an <see cref="ArraySyntax"/>
         /// </summary>
         /// <param name="values">An array of string values</param>
-        public ArraySyntax(string[] values) : this()
+        public ArraySyntax(ReadOnlySpan<string> values) : this()
         {
             if (values == null) throw new ArgumentNullException(nameof(values));
             OpenBracket = SyntaxFactory.Token(TokenKind.OpenBracket);
